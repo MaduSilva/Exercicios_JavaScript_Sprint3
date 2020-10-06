@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Conversão Temperatura</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Conversor de Temperaturas</h2>
+    
+    <form id="formtemperatura">
+        <p>Informe o valor</p>
+        <input type="text" required name="temperatura" id="temperatura">
+        <p>Selecione a temperatura que deseja converter</p>
+        
+        <input type="radio"  id="celsius" name="temperatura">Celsius</checkbox>
+        <input type="radio"  id="fahrenheit" name="temperatura">Fahrenheit</checkbox>
+        <br>
+        <button type="submit" id="btnConverter">Converter</button>
+    </form>
+
+    <script>
+     let temperatura = document.querySelector('#temperatura');
+     let celsius = document.querySelector('#celsius');
+     let fahrenheit = document.querySelector('#fahrenheit');
+     let btnConverter = document.querySelector('#btnConverter');
+
+     btnConverter.addEventListener('click', converter);
+     function converter(event) {
+         event.preventDefault();
+
+         if(!fahrenheit.checked && !celsius.checked){
+             alert('Informe o tipo de conversão');
+         }else if('#temperatura'.value = null){
+             alert('Informe a temperatura');
+         }else if(fahrenheit.checked && !celsius.checked){
+             console.log(9 * (parseFloat(temperatura.value) / 5) + 32);
+         }else{
+            console.log(5 *(parseFloat(temperatura.value) - 32) / 9);
+         }
+     }
+     
+     
+
+    </script>
+    
+</body>
+
+</html>
