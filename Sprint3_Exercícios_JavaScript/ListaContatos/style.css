@@ -1,0 +1,15 @@
+body{
+display: grid;
+align-items: center;
+justify-content: center;
+margin-top: 150px;
+}
+
+*{
+    margin-top: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2{
+    text-align: center;
+}
