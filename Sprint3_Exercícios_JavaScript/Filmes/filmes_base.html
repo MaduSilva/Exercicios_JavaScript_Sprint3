@@ -1,131 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
     <title>Filmes</title>
 </head>
+<body onload="listar()">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Cadastro de Filmes</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Categorias</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Filmes</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
 
-<body>
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Filmes</h1>
+          <p class="lead">Cadastre e visualize filmes cadastrados</p>
+        </div>
+      </div>
 
-    <form id="form">
-        <input type="text" id="nome" placeholder="Nome do filme" required>
-        <input type="text" id="categoria" placeholder="Categoria" required>
-        <input type="text" id="ano" placeholder="Ano de lançamento" required>
+    <div class="container">
+        <div class="bd-example" >
+        <form id="formFilme">
+            <input type="hidden" id="filmeId" />
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control" id="nome" aria-describedby="nome" placeholder="Informe o Nome">
+            </div>
+            <div class="form-group">
+              <label for="categoria">Categoria</label>
+              <input type="text" class="form-control" id="categoria" placeholder="Informe a Categoria">
+            </div>
+            <div class="form-group">
+                <label for="ano">Ano de Lançamento</label>
+                <input type="text" class="form-control small" id="anoLancamento" placeholder="Informe o Ano de Lançamento">
+              </div>
+              <button type="reset" class="btn btn-secondary">Cancelar</button>
+            <button type="button" onclick="cadastrar()" class="btn btn-success">Cadastrar</button>
+        </form>
 
-        <button type="button" onclick="cadastrar()" id="btnCadastrar">Cadastrar</button>
-        <button type="button" onclick="remover()" id="btnRemover">Remover</button>
-
-
-        <table>
-            <caption>Filmes</caption>
+        <table class="table" style="margin-top: 40px;">
             <thead>
-                <th>
-                    Id
-                </th>
-                <th>
-                    Nome
-                </th>
-                <th>
-                    Categoria
-                </th>
-                <th>
-                    Ano Lançamento
-                </th>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Ano Lançamento</th>
+                <th scope="col">Ações</th>
+                <th scope="col"><button type="reset" class="btn btn-primary" onclick="novoFilme()">Novo Filme</button></th>
+              </tr>
             </thead>
             <tbody id="tabela-lista-corpo"></tbody>
         </table>
-    </form>
-
-</body>
+    </div>
 
 <script>
-
+    //fetch == mesmo conceito do xmlhttprequest
     let url = 'https://5f7f7973d6aabe00166f05ae.mockapi.io/api/filmes';
-    let filme = document.querySelector('#filmes')
-    //armazena as categorias retornadas da api se tornando global e visiveis em outras funcoes
-    let filmes = [];
 
-    //XmlHttpRequest - tranferencia de daods entre um cliente e um servidor
-    function listar() {
-        let xhrGet = new XMLHttpRequest();
-        //define a função caso tenha sucesso ou define a função caso tenha um erro
-        xhrGet.onload = listarSucesso;
-        xhrGet.onerror = listarErro;
-        //open necessita de dois parametros, o primeiro é o método da api e o endpoint no caso url
-        xhrGet.open('GET', url);
-        //envia para Api
-        xhrGet.send();
+    //pure functions
+    // => significa chamando um método/chamando uma função/chamando algo que será executado
+    const listar = () => {
+        fetch(url, {
+            method : 'GET'
+        })
+        .then(response => response.json()) //se ocorrer pega o response do json
+        .then(dados => console.log(dados)) //dados pegos as informações de retorno
+        .catch(err => console.error(err));    
+        
     }
-
-    function listarSucesso() {
-        console.log('sucesso');
-        //retorno do this/XmlHttpRequest - retorno da api
-        const data = this.responseText;
-        //converte pra array fazendo um json parse
-        categorias = JSON.parse(data);
-        //mostra no console
-        console.log(filmes);
-    }
-
-    //caso ocorra algum erro na chamada da api, err é a descrição do erro
-    function listarErro(err) {
-        console.error(err);
-    }
-
-    function cadastrar() {
-        event.preventDefault();
-
-        let xhrPost = new XMLHttpRequest();
-        xhrPost.onload = cadastroSucesso;
-        xhrPost.onerror = cadastroErro;
-        //envia os dados para api usando o metodo post
-        xhr.open('POST', url);
-        //define o tipo de conteudo do header
-        xhrPost.setRequestHeader('content-type', 'application/json');
-
-        //cria o objeto com o nome da categoria
-        let params = {
-            name: filmes.value
-        }
-
-        //converte o objeto json para enviar post
-        xhrPost.send(JSON.stringify(params));
-
-    }
-
-    function cadastroSucesso() {
-        console.log('Sucesso')
-        console.log(this.status);
-        console.log(JSON.parse(this.responseText));
-        listar();
-    }
-
-    function cadastroErro() {
-        console.log('Erro' + err);
-    }
-
-    function remover() {
-        let xhrDelete = new XMLHttpRequest();
-        xhrDelete.onload = removeSucesso;
-        xhrDelete.onerror = removeErro;
-        xhrDelete.open('DELETE', url + '/' + categoria.value);
-    }
-
-    function removeSucesso() {
-        console.log('Sucesso');
-        console.log(this.status);
-        console.log(JSON.parse(this.responseText));
-
-        listar();
-    }
-
-    function removeErro() {
-        console.log('Erro' + err);
-    }
-
 
 </script>
+</body>
 
 </html>
+
+
+
+
+
+
+
+    
