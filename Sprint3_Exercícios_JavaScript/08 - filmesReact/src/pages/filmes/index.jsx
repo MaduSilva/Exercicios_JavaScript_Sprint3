@@ -7,12 +7,18 @@ class Filmes extends Component {
     constructor() {
         super();
 
+        //define valores
         this.state = {
             url: 'https://5f90969de0559c0016ad6b27.mockapi.io/filmes',
+            id: '',
+            nome: '',
+            categoria: '',
+            ano: '',
             filmes: []
         }
     }
 
+    //ciclo de vida do react
     componentDidMount() {
         this.listar();
     }
